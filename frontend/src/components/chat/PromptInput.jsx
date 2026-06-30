@@ -7,16 +7,19 @@ import { useChat } from "../../context/ChatContext";
 import { useDomain } from "../../context/DomainContext";
 
 function PromptInput() {
+
   const [prompt, setPrompt] = useState("");
 
   const {
     addMessage,
     setIsTyping,
+    conversationId,
   } = useChat();
 
   const { selectedDomain } = useDomain();
 
   async function handleSend() {
+
     if (!prompt.trim()) return;
 
     const userMessage = prompt;
@@ -32,7 +35,9 @@ function PromptInput() {
     setIsTyping(true);
 
     try {
+
       const response = await api.post("/chat", {
+        conversation_id: conversationId,
         message: userMessage,
         domain: selectedDomain,
       });
@@ -48,29 +53,37 @@ function PromptInput() {
       });
 
     } catch (error) {
-      setIsTyping(false);
 
       console.error(error);
+
+      setIsTyping(false);
 
       addMessage({
         role: "assistant",
         domain: selectedDomain,
         content:
-          "❌ Unable to connect to the backend. Please make sure the FastAPI server is running.",
+          "❌ Unable to connect to the backend.",
       });
+
     }
+
   }
 
   function handleKeyDown(e) {
+
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
+
   }
 
   return (
+
     <div className="border-t border-slate-800 bg-slate-900 p-6">
+
       <div className="flex items-center gap-4">
+
         <textarea
           rows={2}
           value={prompt}
@@ -86,9 +99,13 @@ function PromptInput() {
         >
           <SendHorizontal />
         </button>
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default PromptInput;

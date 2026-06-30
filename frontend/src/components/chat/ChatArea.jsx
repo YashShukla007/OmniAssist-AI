@@ -1,9 +1,16 @@
 import { useChat } from "../../context/ChatContext";
+
 import WelcomeDashboard from "./WelcomeDashboard";
 import MessageBubble from "./MessageBubble";
 
 function ChatArea() {
-  const { messages, isTyping } = useChat();
+
+  const {
+    currentConversation,
+    isTyping,
+  } = useChat();
+
+  const messages = currentConversation?.messages ?? [];
 
   // Show Welcome Dashboard when there are no messages
   if (messages.length === 0) {
