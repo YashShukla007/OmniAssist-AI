@@ -9,11 +9,9 @@ import App from "./App";
 import { DomainProvider } from "./context/DomainContext";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <DomainProvider>
-      <ChatProvider>
-        <App />
-      </ChatProvider>
-    </DomainProvider>
-  </StrictMode>
+  <DomainProvider>
+    <ChatProvider>
+      <App />
+    </ChatProvider>
+  </DomainProvider>
 );

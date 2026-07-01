@@ -20,6 +20,7 @@ class ChatService:
             conversation_id=request.conversation_id,
             role="user",
             content=request.message,
+            domain=request.domain,
         )
 
         # Generate AI response
@@ -33,6 +34,7 @@ class ChatService:
             conversation_id=request.conversation_id,
             role="assistant",
             content=result["answer"],
+            model=result["model"],
         )
 
         return ChatResponse(
