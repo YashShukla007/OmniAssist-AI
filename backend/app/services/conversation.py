@@ -33,7 +33,16 @@ class ConversationManager:
     ):
 
         if conversation_id not in self.conversations:
-            self.create()
+
+            self.conversations[conversation_id] = {
+                "id": conversation_id,
+                "title": "New Chat",
+                "domain": None,
+                "model": None,
+                "created_at": datetime.utcnow().isoformat(),
+                "updated_at": datetime.utcnow().isoformat(),
+                "messages": [],
+            }
 
         conversation = self.conversations[conversation_id]
 
