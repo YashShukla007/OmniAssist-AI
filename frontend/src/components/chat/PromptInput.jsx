@@ -14,7 +14,6 @@ function PromptInput() {
     addMessage,
     setIsTyping,
     conversationId,
-    fetchConversation,
   } = useChat();
 
   const { selectedDomain } = useDomain();
@@ -47,14 +46,12 @@ function PromptInput() {
 
       addMessage({
         role: "assistant",
-        domain: selectedDomain,
         content: response.data.answer,
-        confidence: response.data.confidence,
+        domain: response.data.domain,
         model: response.data.model,
+        provider: response.data.provider,
+        responseTime: response.data.response_time,
       });
-
-      // Refresh conversation from backend
-      await fetchConversation(conversationId);
 
     } catch (error) {
 

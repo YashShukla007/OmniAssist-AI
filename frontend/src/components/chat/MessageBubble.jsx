@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bot, Cpu, BarChart3, Copy, Check } from "lucide-react";
+import { Bot, Cpu, Copy, Check } from "lucide-react";
 
 import MarkdownRenderer from "./MarkdownRenderer";
 
@@ -120,18 +120,6 @@ function MessageBubble({ message }) {
                 <Cpu size={15} />
 
                 {message.model ?? "Unknown"}
-
-              </div>
-
-              <div className="flex items-center gap-2 rounded-full bg-slate-700 px-3 py-1 text-sm">
-
-                <BarChart3 size={15} />
-
-                {message.confidence
-                  ? `${Math.round(
-                      message.confidence * 100
-                    )}% Confidence`
-                  : "Confidence N/A"}
 
               </div>
 

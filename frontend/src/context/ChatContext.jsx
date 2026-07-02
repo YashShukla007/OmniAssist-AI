@@ -5,6 +5,8 @@ import {
   useEffect,
 } from "react";
 
+import { useDomain } from "./DomainContext";
+
 import api from "../services/api";
 
 const ChatContext = createContext();
@@ -16,6 +18,8 @@ export function ChatProvider({ children }) {
   const [conversationId, setConversationId] = useState(null);
 
   const [isTyping, setIsTyping] = useState(false);
+
+  const { setSelectedDomain } = useDomain();
 
   const currentConversation =
     conversations.find(
@@ -52,6 +56,8 @@ export function ChatProvider({ children }) {
           title,
           domain: message.domain ?? chat.domain,
           model: message.model ?? chat.model,
+          provider: message.provider ?? chat.provider,
+          responseTime: message.responseTime ?? chat.responseTime,
           updatedAt: new Date(),
           messages: updatedMessages,
         };
@@ -97,6 +103,8 @@ export function ChatProvider({ children }) {
 
       setConversationId(conversation.id);
 
+      setSelectedDomain("IT Helpdesk");
+
     } catch (error) {
 
       console.error(error);
@@ -125,6 +133,8 @@ export function ChatProvider({ children }) {
         title: chat.title,
         domain: chat.domain,
         model: chat.model,
+        provider: chat.provider,
+        responseTime: chat.response_time,
         createdAt: new Date(chat.created_at),
         updatedAt: new Date(chat.updated_at),
         messages: chat.messages,
@@ -133,6 +143,8 @@ export function ChatProvider({ children }) {
       setConversations(formatted);
 
       setConversationId(formatted[0].id);
+
+      setSelectedDomain(formatted[0].domain);
 
     } catch (error) {
 
@@ -152,6 +164,8 @@ export function ChatProvider({ children }) {
 
       const conversation = response.data;
 
+      setSelectedDomain(conversation.domain);
+
       setConversations((prev) =>
         prev.map((chat) => {
 
@@ -162,12 +176,10 @@ export function ChatProvider({ children }) {
             title: conversation.title,
             domain: conversation.domain,
             model: conversation.model,
-            createdAt: new Date(
-              conversation.created_at
-            ),
-            updatedAt: new Date(
-              conversation.updated_at
-            ),
+            provider: conversation.provider,
+            responseTime: conversation.response_time,
+            createdAt: new Date(conversation.created_at),
+            updatedAt: new Date(conversation.updated_at),
             messages: conversation.messages,
           };
 

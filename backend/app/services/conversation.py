@@ -16,6 +16,8 @@ class ConversationManager:
             "title": "New Chat",
             "domain": None,
             "model": None,
+            "provider": None,
+            "response_time": None,
             "created_at": datetime.utcnow().isoformat(),
             "updated_at": datetime.utcnow().isoformat(),
             "messages": [],
@@ -30,6 +32,8 @@ class ConversationManager:
         content: str,
         domain: str | None = None,
         model: str | None = None,
+        provider: str | None = None,
+        response_time: float | None = None,
     ):
 
         if conversation_id not in self.conversations:
@@ -39,6 +43,8 @@ class ConversationManager:
                 "title": "New Chat",
                 "domain": None,
                 "model": None,
+                "provider": None,
+                "response_time": None,
                 "created_at": datetime.utcnow().isoformat(),
                 "updated_at": datetime.utcnow().isoformat(),
                 "messages": [],
@@ -68,6 +74,12 @@ class ConversationManager:
 
         if model:
             conversation["model"] = model
+
+        if provider:
+            conversation["provider"] = provider
+
+        if response_time is not None:
+            conversation["response_time"] = response_time
 
         conversation["updated_at"] = datetime.utcnow().isoformat()
 

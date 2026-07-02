@@ -17,11 +17,11 @@ class Settings(BaseSettings):
 
     # ---------- LLM Configuration ----------
 
-    LLM_PROVIDER: str = "huggingface"
+    LLM_PROVIDER: str = "openrouter"
 
-    HF_API_TOKEN: str = ""
+    OPENROUTER_API_KEY: str = ""
 
-    HF_MODEL: str = "meta-llama/Llama-3.2-1B-Instruct"
+    OPENROUTER_MODELS: str = ""
 
     model_config = SettingsConfigDict(
         env_file="backend/.env",

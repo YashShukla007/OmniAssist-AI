@@ -9,5 +9,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     answer: str
-    confidence: float
     model: str
+    domain: str
+    provider: str
+    response_time: float

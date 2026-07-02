@@ -1,3 +1,4 @@
+import time
 from backend.app.schemas.chat import ChatRequest, ChatResponse
 from backend.app.services.domain_router import domain_router
 from backend.app.services.conversation import conversation_manager
@@ -24,9 +25,16 @@ class ChatService:
         )
 
         # Generate AI response
+        start = time.perf_counter()
+
         result = await domain_router.route(
             prompt=request.message,
             domain=request.domain,
+        )
+
+        response_time = round(
+            time.perf_counter() - start,
+            2,
         )
 
         # Store AI response
@@ -35,12 +43,16 @@ class ChatService:
             role="assistant",
             content=result["answer"],
             model=result["model"],
+            provider="OpenRouter",
+            response_time=response_time,
         )
 
         return ChatResponse(
             answer=result["answer"],
-            confidence=result["confidence"],
             model=result["model"],
+            domain=request.domain,
+            provider="OpenRouter",
+            response_time=response_time,
         )
 
 
