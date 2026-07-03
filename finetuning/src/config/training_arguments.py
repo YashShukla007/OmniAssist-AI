@@ -1,11 +1,11 @@
-from transformers import TrainingArguments
+from trl import SFTConfig
 
 from src.config.training_config import *
 
 
 def get_training_arguments():
 
-    return TrainingArguments(
+    return SFTConfig(
 
         output_dir=OUTPUT_DIR,
 
@@ -42,4 +42,10 @@ def get_training_arguments():
         optim="paged_adamw_8bit",
 
         dataloader_num_workers=2,
+
+        dataset_text_field="text",
+
+        max_length=MAX_SEQUENCE_LENGTH,
+
+        packing=False,
     )

@@ -3,7 +3,12 @@ from pathlib import Path
 from src.config.model_config import (
     CHAT_DATA_PATH,
     DOMAIN,
+    SEED,
 )
+
+from src.utils.utils import (
+    set_seed,
+) 
 
 from src.loaders.chat_dataset_loader import (
     chat_dataset_loader,
@@ -17,8 +22,22 @@ from src.training.dataset_formatter import (
     dataset_formatter,
 )
 
+from peft import get_peft_model
+
+from trl import SFTTrainer
+
+from src.config.lora_config import (
+    get_lora_config,
+)
+
+from src.config.training_arguments import (
+    get_training_arguments,
+)
+
 
 def main():
+
+    set_seed(SEED)
 
     dataset_path = str(
         Path(CHAT_DATA_PATH)
@@ -54,6 +73,57 @@ def main():
             tokenizer,
         )
     )
+
+    print("=" * 60)
+    print("Applying LoRA...")
+    print("=" * 60)
+
+    model = get_peft_model(
+        model,
+        get_lora_config(),
+    )
+
+    model.print_trainable_parameters()
+
+    print("=" * 60)
+    print("LoRA successfully attached.")
+    print("=" * 60)
+
+    print("=" * 60)
+    print("Building Trainer...")
+    print("=" * 60)
+
+    trainer = SFTTrainer(
+
+        model=model,
+
+        args=get_training_arguments(),
+
+        train_dataset=formatted_dataset,
+
+        processing_class=tokenizer,
+
+    )
+
+    print("=" * 60)
+    print("Starting Training...")
+    print("=" * 60)
+
+    trainer.train()
+
+    print("=" * 60)
+    print("Saving Adapter...")
+    print("=" * 60)
+
+    trainer.save_model()
+
+    tokenizer.save_pretrained(
+        trainer.args.output_dir
+    )
+
+    print("=" * 60)
+    print("Training Completed Successfully!")
+    print("=" * 60)
 
     print("=" * 60)
     print("Sample formatted conversation:")
