@@ -48,6 +48,4 @@ def get_training_arguments():
         max_length=MAX_SEQUENCE_LENGTH,
 
         packing=False,
-
-        max_steps=10,
     )

@@ -1,4 +1,4 @@
-#---------data preprocessing libraries----------
+# --------- Data preprocessing libraries ----------
 datasets==3.6.0
 pandas==2.2.2
 numpy==1.26.4
@@ -8,11 +8,12 @@ requests==2.32.3
 beautifulsoup4==4.12.3
 matplotlib==3.9.2
 
-#----------QLoRA fine-tuning libraries-----------
+# --------- QLoRA fine-tuning libraries ----------
+torch==2.11.0
 transformers==4.56.0
 peft==0.17.0
 trl==0.20.0
-accelerate==1.8.1
+accelerate==1.14.0
 bitsandbytes==0.46.1
 sentencepiece==0.2.0
 scipy==1.14.1
