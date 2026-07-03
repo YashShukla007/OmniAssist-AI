@@ -99,9 +99,12 @@ class ModelLoader:
         model = prepare_model_for_kbit_training(model)
 
         return model, tokenizer
-    
-    
-        def load_for_inference(self):
+
+    # =====================================================
+    # Load Model for Inference
+    # =====================================================
+
+    def load_for_inference(self):
 
         model, tokenizer = self.load()
 
