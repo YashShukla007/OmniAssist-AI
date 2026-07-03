@@ -14,6 +14,13 @@ from src.config.model_config import (
     MODEL_NAME,
 )
 
+from peft import PeftModel
+
+from src.inference.inference_config import (
+    MODEL_TYPE,
+    SFT_ADAPTER_PATH,
+    DPO_ADAPTER_PATH,
+)
 
 class ModelLoader:
 
@@ -92,6 +99,61 @@ class ModelLoader:
         model = prepare_model_for_kbit_training(model)
 
         return model, tokenizer
+    
+    
+        def load_for_inference(self):
+
+        model, tokenizer = self.load()
+
+        if MODEL_TYPE == "base":
+
+            print("=" * 60)
+            print("Loaded Base Model")
+            print("=" * 60)
+
+            return model, tokenizer
+
+        if MODEL_TYPE == "sft":
+
+            print("=" * 60)
+            print("Loading SFT Adapter...")
+            print("=" * 60)
+
+            model = PeftModel.from_pretrained(
+
+                model,
+
+                SFT_ADAPTER_PATH,
+
+            )
+
+            print("SFT Adapter Loaded Successfully")
+
+            return model, tokenizer
+
+        if MODEL_TYPE == "dpo":
+
+            print("=" * 60)
+            print("Loading DPO Adapter...")
+            print("=" * 60)
+
+            model = PeftModel.from_pretrained(
+
+                model,
+
+                DPO_ADAPTER_PATH,
+
+            )
+
+            print("DPO Adapter Loaded Successfully")
+
+            return model, tokenizer
+
+        raise ValueError(
+
+            f"Unknown MODEL_TYPE: {MODEL_TYPE}"
+
+        )
 
 
 model_loader = ModelLoader()

@@ -6,9 +6,11 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+*.pyc
 
 # Virtual Environment
 omni-env/
+omnifinetune-env/
 .venv/
 
 # Environment Variables
@@ -45,3 +47,25 @@ Thumbs.db
 # Logs
 # ==========================
 *.log
+
+# ==========================
+# Trained adapters
+# ==========================
+adapters/
+
+# ==========================
+# Training outputs
+# ==========================
+merged_models/
+
+# ==========================
+# Evaluation outputs
+# ==========================
+evaluation/base_outputs.json
+evaluation/sft_outputs.json
+evaluation/dpo_outputs.json
+
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
