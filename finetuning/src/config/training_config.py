@@ -2,7 +2,7 @@
 # Output Directories
 # =====================================================
 
-OUTPUT_DIR = "adapters/it_helpdesk"
+OUTPUT_DIR = "adapters/sft/it_helpdesk"
 
 LOGGING_DIR = "reports/logs"
 
