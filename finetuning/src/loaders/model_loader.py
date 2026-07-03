@@ -6,6 +6,10 @@ from transformers import (
     BitsAndBytesConfig,
 )
 
+from peft import (
+    prepare_model_for_kbit_training,
+)
+
 from src.config.model_config import (
     MODEL_NAME,
 )
@@ -14,6 +18,10 @@ from src.config.model_config import (
 class ModelLoader:
 
     def load(self):
+
+        # =====================================================
+        # QLoRA Quantization Configuration
+        # =====================================================
 
         bnb_config = BitsAndBytesConfig(
 
@@ -27,14 +35,27 @@ class ModelLoader:
 
         )
 
+        # =====================================================
+        # Tokenizer
+        # =====================================================
+
         tokenizer = AutoTokenizer.from_pretrained(
+
             MODEL_NAME,
+
             trust_remote_code=True,
+
         )
 
         if tokenizer.pad_token is None:
 
             tokenizer.pad_token = tokenizer.eos_token
+
+        tokenizer.padding_side = "right"
+
+        # =====================================================
+        # Base Model
+        # =====================================================
 
         model = AutoModelForCausalLM.from_pretrained(
 
@@ -42,11 +63,33 @@ class ModelLoader:
 
             quantization_config=bnb_config,
 
+            torch_dtype=torch.bfloat16,
+
             device_map="auto",
 
             trust_remote_code=True,
 
         )
+
+        # =====================================================
+        # Model Configuration
+        # =====================================================
+
+        model.config.use_cache = False
+
+        model.config.pretraining_tp = 1
+
+        # =====================================================
+        # Enable Gradient Checkpointing
+        # =====================================================
+
+        model.gradient_checkpointing_enable()
+
+        # =====================================================
+        # Prepare Model for QLoRA Training
+        # =====================================================
+
+        model = prepare_model_for_kbit_training(model)
 
         return model, tokenizer
 

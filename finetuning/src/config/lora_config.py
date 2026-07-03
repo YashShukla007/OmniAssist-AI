@@ -8,11 +8,20 @@ from src.config.training_config import (
 )
 
 
-lora_config = LoraConfig(
-    r=LORA_R,
-    lora_alpha=LORA_ALPHA,
-    lora_dropout=LORA_DROPOUT,
-    target_modules=TARGET_MODULES,
-    bias="none",
-    task_type=TaskType.CAUSAL_LM,
-)
+def get_lora_config():
+
+    return LoraConfig(
+
+        r=LORA_R,
+
+        lora_alpha=LORA_ALPHA,
+
+        lora_dropout=LORA_DROPOUT,
+
+        bias="none",
+
+        task_type=TaskType.CAUSAL_LM,
+
+        target_modules=TARGET_MODULES,
+
+    )

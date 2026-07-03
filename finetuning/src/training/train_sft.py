@@ -55,7 +55,13 @@ def main():
         )
     )
 
-    print(formatted_dataset[0]["text"][:500])
+    print("=" * 60)
+    print("Sample formatted conversation:")
+    print("=" * 60)
+
+    print(formatted_dataset[0]["text"][:1000])
+
+    print("=" * 60)
 
     print("=" * 60)
     print("Everything loaded successfully.")
