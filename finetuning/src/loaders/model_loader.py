@@ -63,7 +63,7 @@ class ModelLoader:
 
             quantization_config=bnb_config,
 
-            torch_dtype=torch.bfloat16,
+            torch_dtype="auto",
 
             device_map="auto",
 

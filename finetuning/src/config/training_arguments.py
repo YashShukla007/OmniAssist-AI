@@ -36,4 +36,10 @@ def get_training_arguments():
         remove_unused_columns=False,
 
         seed=42,
+
+        lr_scheduler_type="cosine",
+
+        optim="paged_adamw_8bit",
+
+        dataloader_num_workers=2,
     )
