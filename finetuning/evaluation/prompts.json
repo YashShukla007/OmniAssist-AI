@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "prompt": "How can I cancel my order?"
+    },
+    {
+        "id": 2,
+        "prompt": "I want a refund for my purchase."
+    },
+    {
+        "id": 3,
+        "prompt": "How do I change my shipping address?"
+    },
+    {
+        "id": 4,
+        "prompt": "My order hasn't arrived yet."
+    },
+    {
+        "id": 5,
+        "prompt": "I received a damaged product."
+    },
+    {
+        "id": 6,
+        "prompt": "How do I track my order?"
+    },
+    {
+        "id": 7,
+        "prompt": "I entered the wrong delivery address."
+    },
+    {
+        "id": 8,
+        "prompt": "My payment failed during checkout."
+    },
+    {
+        "id": 9,
+        "prompt": "How do I return an item?"
+    },
+    {
+        "id": 10,
+        "prompt": "How can I contact customer support?"
+    }
+]
