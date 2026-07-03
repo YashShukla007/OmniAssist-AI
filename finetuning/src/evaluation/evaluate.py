@@ -14,13 +14,15 @@ from src.inference.inference_config import (
 )
 
 
-def evaluate():
+def evaluate(selected_model=None):
 
     print("=" * 60)
     print("Loading Model...")
     print("=" * 60)
 
-    model, tokenizer = model_loader.load_for_inference()
+    model, tokenizer = model_loader.load_for_inference(
+    selected_model=selected_model,
+)
 
     model.eval()
 
@@ -70,9 +72,12 @@ def evaluate():
 
         print(f"Completed Prompt {sample['id']}")
 
-    save_path = Path(
-        "evaluation"
-    ) / f"{MODEL_TYPE}_outputs.json"
+    selected_model = selected_model or MODEL_TYPE
+
+    save_path = (
+        Path("evaluation")
+        / f"{selected_model}_outputs.json"
+    )
 
     with open(
         save_path,

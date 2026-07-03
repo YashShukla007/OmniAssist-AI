@@ -104,11 +104,16 @@ class ModelLoader:
     # Load Model for Inference
     # =====================================================
 
-    def load_for_inference(self):
+    def load_for_inference(
+        self,
+        selected_model=None,
+    ):
 
         model, tokenizer = self.load()
 
-        if MODEL_TYPE == "base":
+        selected_model = selected_model or MODEL_TYPE
+
+        if selected_model == "base":
 
             print("=" * 60)
             print("Loaded Base Model")
@@ -116,7 +121,7 @@ class ModelLoader:
 
             return model, tokenizer
 
-        if MODEL_TYPE == "sft":
+        if selected_model == "sft":
 
             print("=" * 60)
             print("Loading SFT Adapter...")
@@ -134,7 +139,7 @@ class ModelLoader:
 
             return model, tokenizer
 
-        if MODEL_TYPE == "dpo":
+        if selected_model == "dpo":
 
             print("=" * 60)
             print("Loading DPO Adapter...")
@@ -154,7 +159,7 @@ class ModelLoader:
 
         raise ValueError(
 
-            f"Unknown MODEL_TYPE: {MODEL_TYPE}"
+            f"Unknown MODEL_TYPE: {selected_model}"
 
         )
 
