@@ -22,7 +22,7 @@ REPETITION_PENALTY = 1.1
 # "sft"
 # "dpo"
 
-MODEL_TYPE = "sft"
+MODEL_TYPE = "base"
 
 # =====================================================
 # Adapter Paths
