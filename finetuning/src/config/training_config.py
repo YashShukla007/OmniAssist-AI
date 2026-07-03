@@ -29,6 +29,23 @@ LOGGING_STEPS = 10
 SAVE_STEPS = 250
 
 # =====================================================
+# Training Dataset Configuration
+# =====================================================
+
+# Use a subset of the dataset during development.
+# Set to None to train on the FULL dataset.
+#
+# Example:
+# TRAIN_SUBSET_SIZE = 2000   -> Uses first 2000 samples
+# TRAIN_SUBSET_SIZE = None   -> Uses entire dataset
+#
+# Recommended:
+# - Development (Colab Free): 2000 or 5000 or any sample size depending upon whether your GPU can support or not, whether GPU limits may exhaust before total samples are processed...
+# - Final Training (Better GPU): None
+
+TRAIN_SUBSET_SIZE = 600
+
+# =====================================================
 # LoRA Configuration
 # =====================================================
 

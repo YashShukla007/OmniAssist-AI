@@ -16,6 +16,10 @@ from src.config.training_arguments import (
     get_training_arguments,
 )
 
+from src.config.training_config import (
+    TRAIN_SUBSET_SIZE,
+)
+
 from src.loaders.chat_dataset_loader import (
     chat_dataset_loader,
 )
@@ -62,6 +66,37 @@ def main():
     dataset = chat_dataset_loader.load(
         dataset_path
     )
+
+    # =====================================================
+    # Use Dataset Subset (Development Only)
+    # =====================================================
+    #
+    # During development on Google Colab Free, training on
+    # the entire dataset can take many hours.
+    #
+    # TRAIN_SUBSET_SIZE allows us to train on only the first
+    # N samples for faster experimentation.
+    #
+    # IMPORTANT:
+    # Before final training on a better GPU, simply set
+    #
+    # TRAIN_SUBSET_SIZE = None
+    #
+    # in training_config.py
+    #
+    # No changes are required in this file.
+    # =====================================================
+
+    if TRAIN_SUBSET_SIZE is not None:
+
+        dataset = dataset.select(
+            range(
+                min(
+                    TRAIN_SUBSET_SIZE,
+                    len(dataset),
+                )
+            )
+        )
 
     print(f"Samples : {len(dataset)}")
 
