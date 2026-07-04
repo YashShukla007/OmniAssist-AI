@@ -7,6 +7,7 @@ from transformers import (
 )
 
 from peft import (
+    PeftModel,
     prepare_model_for_kbit_training,
 )
 
@@ -14,12 +15,13 @@ from src.config.model_config import (
     MODEL_NAME,
 )
 
-from peft import PeftModel
-
 from src.inference.inference_config import (
     MODEL_TYPE,
+    ADAPTER_SOURCE,
     SFT_ADAPTER_PATH,
     DPO_ADAPTER_PATH,
+    SFT_HF_REPO,
+    DPO_HF_REPO,
 )
 
 class ModelLoader:
@@ -127,11 +129,20 @@ class ModelLoader:
             print("Loading SFT Adapter...")
             print("=" * 60)
 
+            adapter_path = (
+                SFT_ADAPTER_PATH
+                if ADAPTER_SOURCE == "local"
+                else SFT_HF_REPO
+            )
+
+            print(f"Source : {ADAPTER_SOURCE}")
+            print(f"Adapter : {adapter_path}")
+
             model = PeftModel.from_pretrained(
 
                 model,
 
-                SFT_ADAPTER_PATH,
+                adapter_path,
 
             )
 
@@ -145,11 +156,20 @@ class ModelLoader:
             print("Loading DPO Adapter...")
             print("=" * 60)
 
+            adapter_path = (
+                DPO_ADAPTER_PATH
+                if ADAPTER_SOURCE == "local"
+                else DPO_HF_REPO
+            )
+
+            print(f"Source : {ADAPTER_SOURCE}")
+            print(f"Adapter : {adapter_path}")
+
             model = PeftModel.from_pretrained(
 
                 model,
 
-                DPO_ADAPTER_PATH,
+                adapter_path,
 
             )
 

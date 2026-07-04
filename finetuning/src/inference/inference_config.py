@@ -18,16 +18,31 @@ REPETITION_PENALTY = 1.1
 # Model Selection
 # =====================================================
 
-# "base"
-# "sft"
-# "dpo"
-
 MODEL_TYPE = "sft"
+# base | sft | dpo
+
 
 # =====================================================
-# Adapter Paths
+# Adapter Source
+# =====================================================
+
+ADAPTER_SOURCE = "local"
+# local | huggingface
+
+
+# =====================================================
+# Local Adapter Paths
 # =====================================================
 
 SFT_ADAPTER_PATH = "adapters/sft/it_helpdesk"
 
 DPO_ADAPTER_PATH = "adapters/dpo/it_helpdesk"
+
+
+# =====================================================
+# Hugging Face Repositories
+# =====================================================
+
+SFT_HF_REPO = "YashShukla007/OmniAssist-SFT-IT-Helpdesk"
+
+DPO_HF_REPO = "YashShukla007/OmniAssist-DPO-IT-Helpdesk"
