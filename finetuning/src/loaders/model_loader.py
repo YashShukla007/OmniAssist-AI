@@ -114,14 +114,15 @@ class ModelLoader:
         print("Loading SFT Adapter for DPO Training...")
         print("=" * 60)
 
+        if ADAPTER_SOURCE == "local":
+            adapter_path = SFT_ADAPTER_PATH
+        else:
+            adapter_path = SFT_HF_REPO
+
         model = PeftModel.from_pretrained(
-
             model,
-
-            SFT_ADAPTER_PATH,
-
+            adapter_path,
             is_trainable=True,
-
         )
 
         print("=" * 60)
