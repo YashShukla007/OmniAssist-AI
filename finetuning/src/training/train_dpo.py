@@ -6,6 +6,10 @@ from src.config.model_config import (
     SEED,
 )
 
+from src.config.lora_config import (
+    get_lora_config,
+)
+
 from src.config.dpo_training_arguments import (
     get_dpo_training_arguments,
 )
@@ -90,7 +94,7 @@ def main():
     print("Loading Model...")
     print("=" * 60)
 
-    model, tokenizer = model_loader.load()
+    model, tokenizer = model_loader.load_for_dpo()
 
     print("Model Loaded Successfully")
 

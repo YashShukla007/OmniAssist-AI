@@ -103,6 +103,34 @@ class ModelLoader:
         return model, tokenizer
 
     # =====================================================
+    # Load Model for DPO Training
+    # =====================================================
+
+    def load_for_dpo(self):
+
+        model, tokenizer = self.load()
+
+        print("=" * 60)
+        print("Loading SFT Adapter for DPO Training...")
+        print("=" * 60)
+
+        model = PeftModel.from_pretrained(
+
+            model,
+
+            SFT_ADAPTER_PATH,
+
+            is_trainable=True,
+
+        )
+
+        print("=" * 60)
+        print("SFT Adapter Loaded Successfully")
+        print("=" * 60)
+
+        return model, tokenizer
+
+    # =====================================================
     # Load Model for Inference
     # =====================================================
 

@@ -1,0 +1,13 @@
+# --------- Core ML Libraries ---------
+torch==2.11.0
+transformers==4.56.0
+peft==0.17.0
+trl==0.20.0
+accelerate==1.14.0
+bitsandbytes==0.46.1
+datasets==3.6.0
+
+# --------- Utilities ---------
+sentencepiece==0.2.0
+evaluate==0.4.3
+safetensors==0.5.3
