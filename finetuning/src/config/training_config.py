@@ -43,7 +43,7 @@ SAVE_STEPS = 250
 # - Development (Colab Free): 2000 or 5000 or any sample size depending upon whether your GPU can support or not, whether GPU limits may exhaust before total samples are processed...
 # - Final Training (Better GPU): None
 
-TRAIN_SUBSET_SIZE = 600
+TRAIN_SUBSET_SIZE = 300
 
 # =====================================================
 # LoRA Configuration
