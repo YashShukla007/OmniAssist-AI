@@ -1,5 +1,5 @@
 
-#---------------------- THIS FILE IS HAS OLDER IMPLEMENTATION CONFIGURATIONS USED EARLIER -----------------------------
+#--------------------------- THIS FILE IS HAS OLDER IMPLEMENTATION CONFIGURATIONS USED EARLIER (NOT USEFUL NOW) -----------------------------
 
 from trl import SFTTrainer
 from transformers import TrainingArguments
