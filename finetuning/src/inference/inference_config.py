@@ -18,7 +18,7 @@ REPETITION_PENALTY = 1.1
 # Model Selection
 # =====================================================
 
-MODEL_TYPE = "base"
+MODEL_TYPE = "sft"
 # base | sft | dpo
 
 
