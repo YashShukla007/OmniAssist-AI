@@ -21,6 +21,10 @@ def main():
 
     evaluate("sft")
 
+    print("\nEvaluating DPO Model...\n")
+
+    evaluate("dpo")
+
     print("\nGenerating Comparison Report...\n")
 
     generate_report()
