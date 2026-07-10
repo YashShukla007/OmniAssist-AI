@@ -6,6 +6,13 @@ from src.comparison.compare_loader import (
     compare_loader,
 )
 
+from src.comparison.compare_inference import (
+    compare_inference,
+)
+
+from src.comparison.compare_saver import (
+    compare_saver,
+)
 
 def main():
 
@@ -32,6 +39,28 @@ def main():
         loaded_model, tokenizer = compare_loader.load_model(
 
             model,
+
+        )
+
+        outputs = compare_inference.generate(
+
+            loaded_model,
+
+            tokenizer,
+
+        )
+
+        compare_saver.save(
+
+            model,
+
+            outputs,
+
+        )
+
+        print(
+
+            f"Generated {len(outputs)} responses."
 
         )
 
