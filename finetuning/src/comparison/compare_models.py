@@ -14,6 +14,13 @@ from src.comparison.compare_saver import (
     compare_saver,
 )
 
+from src.comparison.compare_report import (
+    compare_report,
+)
+
+import gc
+import torch
+
 def main():
 
     print("=" * 60)
@@ -68,7 +75,17 @@ def main():
 
         del tokenizer
 
+        gc.collect()
+
+        if torch.cuda.is_available():
+
+            torch.cuda.empty_cache()
+
         print()
+
+    print()
+
+    compare_report.generate()
 
 
 if __name__ == "__main__":
