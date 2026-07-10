@@ -1,5 +1,6 @@
-import json
-from pathlib import Path
+from src.evaluation.prompt_loader import (
+    prompt_loader,
+)
 
 from src.loaders.model_loader import (
     model_loader,
@@ -26,17 +27,7 @@ def evaluate(selected_model=None):
 
     model.eval()
 
-    prompts_path = Path(
-        "evaluation/prompts.json"
-    )
-
-    with open(
-        prompts_path,
-        "r",
-        encoding="utf-8",
-    ) as f:
-
-        prompts = json.load(f)
+    prompts = prompt_loader.load()
 
     outputs = []
 

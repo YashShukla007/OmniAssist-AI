@@ -1,42 +1,92 @@
 [
     {
         "id": 1,
-        "prompt": "How can I cancel my order?"
+        "prompt": "How can I cancel my order?",
+        "reference": "You can cancel your order from your Orders page before the order has been shipped. If the order has already been shipped, you may need to initiate a return after delivery.",
+        "metadata": {
+            "category": "ORDER",
+            "difficulty": "Easy"
+        }
     },
     {
         "id": 2,
-        "prompt": "I want a refund for my purchase."
+        "prompt": "I want a refund for my purchase.",
+        "reference": "Refunds are processed after the returned item has been received and inspected. Once approved, the refund is issued to your original payment method.",
+        "metadata": {
+            "category": "REFUND",
+            "difficulty": "Easy"
+        }
     },
     {
         "id": 3,
-        "prompt": "How do I change my shipping address?"
+        "prompt": "How do I change my shipping address?",
+        "reference": "You can change your shipping address before the order is shipped from the Orders section of your account or by contacting customer support.",
+        "metadata": {
+            "category": "SHIPPING",
+            "difficulty": "Easy"
+        }
     },
     {
         "id": 4,
-        "prompt": "My order hasn't arrived yet."
+        "prompt": "My order hasn't arrived yet.",
+        "reference": "Check your tracking information first. If the estimated delivery date has passed, contact customer support so they can investigate the shipment.",
+        "metadata": {
+            "category": "DELIVERY",
+            "difficulty": "Medium"
+        }
     },
     {
         "id": 5,
-        "prompt": "I received a damaged product."
+        "prompt": "I received a damaged product.",
+        "reference": "We're sorry to hear that. Please upload photos of the damaged item and contact customer support. A replacement or refund will be arranged according to our policy.",
+        "metadata": {
+            "category": "RETURNS",
+            "difficulty": "Easy"
+        }
     },
     {
         "id": 6,
-        "prompt": "How do I track my order?"
+        "prompt": "How do I track my order?",
+        "reference": "Go to the Orders section of your account and select your order to view the latest tracking information provided by the shipping carrier.",
+        "metadata": {
+            "category": "TRACKING",
+            "difficulty": "Easy"
+        }
     },
     {
         "id": 7,
-        "prompt": "I entered the wrong delivery address."
+        "prompt": "I entered the wrong delivery address.",
+        "reference": "If your order has not yet shipped, you can update the delivery address from your account or contact customer support immediately.",
+        "metadata": {
+            "category": "SHIPPING",
+            "difficulty": "Medium"
+        }
     },
     {
         "id": 8,
-        "prompt": "My payment failed during checkout."
+        "prompt": "My payment failed during checkout.",
+        "reference": "Verify your payment details, ensure sufficient funds are available, and try again. If the issue continues, contact your bank or customer support.",
+        "metadata": {
+            "category": "PAYMENT",
+            "difficulty": "Medium"
+        }
     },
     {
         "id": 9,
-        "prompt": "How do I return an item?"
+        "prompt": "How do I return an item?",
+        "reference": "Visit the Orders section, select the item you wish to return, and follow the return instructions. Once the return is approved, ship the item using the provided label.",
+        "metadata": {
+            "category": "RETURNS",
+            "difficulty": "Easy"
+        }
     },
     {
         "id": 10,
-        "prompt": "How can I contact customer support?"
+        "prompt": "How can I contact customer support?",
+        "reference": "You can contact customer support through live chat, email, or the support section available on our website or mobile application.",
+        "metadata": {
+            "category": "SUPPORT",
+            "difficulty": "Easy"
+        }
     }
 ]
