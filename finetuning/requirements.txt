@@ -20,6 +20,7 @@ scipy==1.14.1
 evaluate==0.4.3
 safetensors==0.5.3
 
+huggingface_hub==0.34.4
 
 rouge-score==0.1.2
 nltk==3.9.1
