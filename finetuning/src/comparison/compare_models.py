@@ -2,6 +2,10 @@ from src.comparison.compare_utils import (
     comparison_utils,
 )
 
+from src.comparison.compare_loader import (
+    compare_loader,
+)
+
 
 def main():
 
@@ -24,6 +28,18 @@ def main():
             model,
 
         )
+
+        loaded_model, tokenizer = compare_loader.load_model(
+
+            model,
+
+        )
+
+        del loaded_model
+
+        del tokenizer
+
+        print()
 
 
 if __name__ == "__main__":
