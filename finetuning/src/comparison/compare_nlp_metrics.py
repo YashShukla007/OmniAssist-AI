@@ -40,9 +40,9 @@ class CompareNLPMetrics:
 
     ):
 
-        # ==========================================
+        # =====================================================
         # BLEU
-        # ==========================================
+        # =====================================================
 
         bleu = sentence_bleu(
 
@@ -58,9 +58,9 @@ class CompareNLPMetrics:
 
         )
 
-        # ==========================================
+        # =====================================================
         # ROUGE
-        # ==========================================
+        # =====================================================
 
         rouge_scores = self.rouge.score(
 
@@ -70,9 +70,9 @@ class CompareNLPMetrics:
 
         )
 
-        # ==========================================
+        # =====================================================
         # BERTScore
-        # ==========================================
+        # =====================================================
 
         _, _, f1 = score(
 
@@ -98,7 +98,7 @@ class CompareNLPMetrics:
 
             "bleu": round(
 
-                bleu,
+                float(bleu),
 
                 4,
 
@@ -106,7 +106,7 @@ class CompareNLPMetrics:
 
             "rouge1": round(
 
-                rouge_scores["rouge1"].fmeasure,
+                float(rouge_scores["rouge1"].fmeasure),
 
                 4,
 
@@ -114,7 +114,7 @@ class CompareNLPMetrics:
 
             "rouge2": round(
 
-                rouge_scores["rouge2"].fmeasure,
+                float(rouge_scores["rouge2"].fmeasure),
 
                 4,
 
@@ -122,7 +122,7 @@ class CompareNLPMetrics:
 
             "rougeL": round(
 
-                rouge_scores["rougeL"].fmeasure,
+                float(rouge_scores["rougeL"].fmeasure),
 
                 4,
 
@@ -130,7 +130,7 @@ class CompareNLPMetrics:
 
             "bertscore": round(
 
-                f1.item(),
+                float(f1[0]),
 
                 4,
 

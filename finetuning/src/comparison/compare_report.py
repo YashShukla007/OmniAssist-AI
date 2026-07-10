@@ -12,6 +12,13 @@ from src.comparison.compare_metrics import (
     compare_metrics,
 )
 
+from src.comparison.compare_nlp_metrics import (
+    compare_nlp_metrics,
+)
+
+from src.evaluation.prompt_loader import (
+            prompt_loader,
+)
 
 class CompareReport:
 
@@ -22,6 +29,16 @@ class CompareReport:
         # =====================================================
 
         models = comparison_utils.get_enabled_models()
+
+        prompts = prompt_loader.load()
+
+        prompt_lookup = {
+
+            prompt["id"]: prompt
+
+            for prompt in prompts
+
+        }
 
         output_dir = Path("comparison/outputs")
 
@@ -235,6 +252,24 @@ class CompareReport:
 
                     ][idx]["response"]
 
+                    reference = prompt_lookup[
+
+                        model_outputs[
+
+                            model["name"]
+
+                        ][idx]["id"]
+
+                    ]["reference"]
+
+                    nlp_metrics = compare_nlp_metrics.calculate(
+
+                        response,
+
+                        reference,
+
+                    )
+
                     metrics = compare_metrics.calculate(
                         response
                     )
@@ -258,7 +293,27 @@ class CompareReport:
                     )
 
                     report.write(
-                        f"**Average Word Length:** {metrics['average_word_length']}  \n\n"
+                        f"**Average Word Length:** {metrics['average_word_length']}  \n"
+                    )
+
+                    report.write(
+                        f"**BLEU:** {nlp_metrics['bleu']}  \n"
+                    )
+
+                    report.write(
+                        f"**ROUGE-1:** {nlp_metrics['rouge1']}  \n"
+                    )
+
+                    report.write(
+                        f"**ROUGE-2:** {nlp_metrics['rouge2']}  \n"
+                    )
+
+                    report.write(
+                        f"**ROUGE-L:** {nlp_metrics['rougeL']}  \n"
+                    )
+
+                    report.write(
+                        f"**BERTScore:** {nlp_metrics['bertscore']}  \n\n"
                     )
 
                     report.write(
