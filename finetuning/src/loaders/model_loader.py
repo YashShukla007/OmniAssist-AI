@@ -26,7 +26,15 @@ from src.inference.inference_config import (
 
 class ModelLoader:
 
-    def load(self):
+    def load(
+
+        self,
+
+        base_model=None,
+
+    ):
+        
+        base_model = base_model or MODEL_NAME
 
         # =====================================================
         # QLoRA Quantization Configuration
@@ -50,7 +58,7 @@ class ModelLoader:
 
         tokenizer = AutoTokenizer.from_pretrained(
 
-            MODEL_NAME,
+            base_model,
 
             trust_remote_code=True,
 
@@ -68,7 +76,7 @@ class ModelLoader:
 
         model = AutoModelForCausalLM.from_pretrained(
 
-            MODEL_NAME,
+            base_model,
 
             quantization_config=bnb_config,
 
@@ -106,18 +114,31 @@ class ModelLoader:
     # Load Model for DPO Training
     # =====================================================
 
-    def load_for_dpo(self):
+    def load_for_dpo(
+            self,
+            base_model=None,
+            adapter_path=None,
+    ):
 
-        model, tokenizer = self.load()
+        model, tokenizer = self.load(
+
+            base_model=base_model,
+
+        )
 
         print("=" * 60)
         print("Loading SFT Adapter for DPO Training...")
         print("=" * 60)
 
-        if ADAPTER_SOURCE == "local":
-            adapter_path = SFT_ADAPTER_PATH
-        else:
-            adapter_path = SFT_HF_REPO
+        adapter_path = adapter_path or (
+
+            SFT_ADAPTER_PATH
+
+            if ADAPTER_SOURCE == "local"
+
+            else SFT_HF_REPO
+
+        )
 
         model = PeftModel.from_pretrained(
             model,
@@ -138,9 +159,15 @@ class ModelLoader:
     def load_for_inference(
         self,
         selected_model=None,
+        base_model=None,
+        adapter_path=None,
     ):
 
-        model, tokenizer = self.load()
+        model, tokenizer = self.load(
+
+            base_model=base_model,
+
+        )
 
         selected_model = selected_model or MODEL_TYPE
 
@@ -158,7 +185,7 @@ class ModelLoader:
             print("Loading SFT Adapter...")
             print("=" * 60)
 
-            adapter_path = (
+            adapter_path = adapter_path or (
                 SFT_ADAPTER_PATH
                 if ADAPTER_SOURCE == "local"
                 else SFT_HF_REPO
@@ -185,7 +212,7 @@ class ModelLoader:
             print("Loading DPO Adapter...")
             print("=" * 60)
 
-            adapter_path = (
+            adapter_path = adapter_path or (
                 DPO_ADAPTER_PATH
                 if ADAPTER_SOURCE == "local"
                 else DPO_HF_REPO
