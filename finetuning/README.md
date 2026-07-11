@@ -88,6 +88,33 @@ The framework is designed with a modular architecture so that different base mod
 
 ---
 
+## Implementation Notes
+
+This project implements a complete parameter-efficient fine-tuning workflow using the Hugging Face ecosystem.
+
+The implementation includes:
+
+- Transformers
+- PEFT
+- TRL
+- BitsAndBytes
+- PyTorch
+
+The fine-tuning pipeline consists of:
+
+1. Dataset preprocessing
+2. Instruction dataset generation
+3. Supervised Fine-Tuning (SFT)
+4. Preference dataset generation
+5. Direct Preference Optimization (DPO)
+6. Inference
+7. Automatic evaluation
+8. Model comparison
+
+The project uses a modular architecture that separates preprocessing, training, inference, evaluation, and comparison into independent components for easier maintenance and future extension.
+
+---
+
 ## Project Architecture
 
 ```
@@ -713,9 +740,13 @@ Although the framework is fully functional, a few limitations remain.
 
 - LLM-as-a-Judge evaluation is planned as a future enhancement.
 
+- The project starts from the pretrained instruction-tuned model **Qwen2.5-1.5B-Instruct** and therefore focuses on instruction fine-tuning (SFT) followed by Direct Preference Optimization (DPO).
+
+- A separate non-instruction fine-tuning stage was not included, as the selected base model already provides strong instruction-following capabilities.
+
 ---
 
-# Challenges Faced
+## Challenges Faced
 
 - Limited GPU memory while fine-tuning large language models.
 - Preparing high-quality instruction and preference datasets.
@@ -726,7 +757,7 @@ Although the framework is fully functional, a few limitations remain.
 
 ---
 
-# Final Observations
+## Final Observations
 
 The DPO-aligned model consistently generated more domain-specific and professional responses than the base model.
 
