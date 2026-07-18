@@ -25,6 +25,12 @@ class Settings(BaseSettings):
 
     OPENROUTER_MODELS: str = ""
 
+    # ---------- Authentication -----------
+
+    SECRET_KEY: str = ""
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+
     model_config = SettingsConfigDict(
         env_file="backend/.env",
         env_file_encoding="utf-8",
