@@ -1,4 +1,4 @@
-from backend.app.models.llm_manager import llm_manager
+from backend.app.services.llm_manager import llm_manager
 
 
 class DomainRouter:

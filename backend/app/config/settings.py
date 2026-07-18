@@ -15,6 +15,8 @@ class Settings(BaseSettings):
 
     PORT: int = 8000
 
+    DATABASE_URL: str = ""
+
     # ---------- LLM Configuration ----------
 
     LLM_PROVIDER: str = "openrouter"

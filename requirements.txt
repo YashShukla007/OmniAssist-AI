@@ -1,0 +1,2 @@
+# added these given below in my virtual enviornment :
+# uv pip install sqlalchemy psycopg[binary] alembic
