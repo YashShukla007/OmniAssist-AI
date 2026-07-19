@@ -18,9 +18,9 @@ venv/
 .env
 
 # ==========================
-# Models & Training
+# Models & Training (FOR FINETUNING PART)
 # ==========================
-models/
+finetuning/models/
 checkpoints/
 outputs/
 cache/
