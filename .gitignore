@@ -12,6 +12,7 @@ __pycache__/
 omni-env/
 omnifinetune-env/
 .venv/
+venv/
 
 # Environment Variables
 .env
@@ -36,6 +37,7 @@ frontend/dist/
 # VS Code
 # ==========================
 .vscode/
+.idea/
 
 # ==========================
 # OS
@@ -69,3 +71,27 @@ evaluation/dpo_outputs.json
 # Jupyter
 # ==========================
 .ipynb_checkpoints/
+
+# ==========================
+# Alembic compiled cache
+# ==========================
+alembic/__pycache__/
+
+# ==========================
+# Build artifacts
+# ==========================
+build/
+dist/
+*.egg-info/
+
+# ==========================
+# Python cache
+# ==========================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ==========================
+# ==========================
