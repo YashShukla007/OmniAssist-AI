@@ -26,10 +26,6 @@ export function ChatProvider({ children }) {
       (chat) => chat.id === conversationId
     ) ?? null;
 
-  useEffect(() => {
-    loadConversations();
-  }, []);
-
   function addMessage(message) {
 
     setConversations((prev) => {
@@ -82,6 +78,10 @@ export function ChatProvider({ children }) {
 
   async function newConversation() {
 
+    if (!localStorage.getItem("omniassist_token")) {
+      return;
+    }
+
     try {
 
       const response = await api.post("/conversations/");
@@ -114,6 +114,10 @@ export function ChatProvider({ children }) {
   }
 
   async function loadConversations() {
+
+    if (!localStorage.getItem("omniassist_token")) {
+      return;
+    }
 
     try {
 
@@ -202,6 +206,28 @@ export function ChatProvider({ children }) {
 
   }
 
+  async function ensureConversation() {
+    if (!localStorage.getItem("omniassist_token")) {
+      return;
+    }
+
+    if (conversationId !== null) {
+      return;
+    }
+
+    await loadConversations();
+  }
+
+  useEffect(() => {
+    const initialLoad = window.setTimeout(() => {
+      void loadConversations();
+    }, 0);
+
+    return () => window.clearTimeout(initialLoad);
+    // The initial conversation fetch intentionally runs once when the provider mounts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
@@ -212,6 +238,7 @@ export function ChatProvider({ children }) {
         newConversation,
         selectConversation,
         fetchConversation,
+        ensureConversation,
         isTyping,
         setIsTyping,
       }}
@@ -222,6 +249,7 @@ export function ChatProvider({ children }) {
 
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useChat() {
   return useContext(ChatContext);
 }

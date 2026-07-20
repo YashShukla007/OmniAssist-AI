@@ -1,16 +1,4 @@
-import MainLayout from "../components/layout/MainLayout";
-import Sidebar from "../components/layout/Sidebar";
-import RightPanel from "../components/layout/RightPanel";
-import ChatWindow from "../components/chat/ChatWindow";
+// Compatibility entry point for code that previously rendered the chat home directly.
+import Dashboard from "./Dashboard";
 
-function Home() {
-  return (
-    <MainLayout
-      sidebar={<Sidebar />}
-      chat={<ChatWindow />}
-      insights={<RightPanel />}
-    />
-  );
-}
-
-export default Home;
+export default Dashboard;

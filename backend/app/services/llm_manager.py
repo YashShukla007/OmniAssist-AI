@@ -1,4 +1,5 @@
 from backend.app.config.settings import settings
+from fastapi import HTTPException, status
 
 from backend.app.providers.openrouter_provider import OpenRouterProvider
 from backend.app.providers.ollama_provider import OllamaProvider
@@ -18,9 +19,7 @@ class LLMManager:
 
         else:
 
-            raise ValueError(
-                f"Unsupported provider: {settings.LLM_PROVIDER}"
-            )
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Unsupported provider: {settings.LLM_PROVIDER}")
 
     async def generate(
         self,

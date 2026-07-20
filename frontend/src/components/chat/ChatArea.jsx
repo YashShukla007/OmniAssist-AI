@@ -3,7 +3,7 @@ import { useChat } from "../../context/ChatContext";
 import WelcomeDashboard from "./WelcomeDashboard";
 import MessageBubble from "./MessageBubble";
 
-function ChatArea() {
+function ChatArea({ compact = false }) {
 
   const {
     currentConversation,
@@ -16,13 +16,13 @@ function ChatArea() {
   if (messages.length === 0) {
     return (
       <div className="flex-1 overflow-y-auto">
-        <WelcomeDashboard />
+        {compact ? <AssistantEmptyState /> : <WelcomeDashboard />}
       </div>
     );
   }
 
   return (
-    <div className="flex-1 overflow-y-auto px-10 py-8">
+    <div className={`chat-area ${compact ? "chat-area-compact" : ""}`}>
 
       {messages.map((message, index) => (
         <MessageBubble
@@ -39,6 +39,10 @@ function ChatArea() {
 
     </div>
   );
+}
+
+function AssistantEmptyState() {
+  return <div className="assistant-empty"><div className="assistant-request">I need a cardiology appointment next week.<br />Also I want to upload my ECG report.</div><div className="assistant-progress"><span>♡</span><div><strong>AI Assistant is ready to help</strong><small>Ask a question or start a workflow below.</small></div></div><div className="agent-workflow"><div className="section-heading"><strong>Agent Workflow</strong><button>View Details →</button></div>{["Coordinator Agent", "Routing Agent", "Appointment Agent", "Document Agent", "Reminder Agent", "Safety Agent"].map((agent, index) => <div className="workflow-line" key={agent}><i /> <div><strong>{agent}</strong><small>{index === 0 ? "Goal received and workflow created" : "Ready when your request is sent"}</small></div><time>10:30:{11 + index}</time></div>)}</div></div>;
 }
 
 export default ChatArea;

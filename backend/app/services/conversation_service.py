@@ -1,6 +1,6 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from backend.app.database.session import SessionLocal
 from backend.app.models.conversation import Conversation
 from backend.app.models.message import Message
 
@@ -9,136 +9,138 @@ class ConversationService:
 
     def create(
         self,
+        db: Session,
         user_id: int,
     ) -> int:
 
-        db: Session = SessionLocal()
+        conversation = Conversation(
+            user_id=user_id,
+            title="New Chat",
+        )
 
-        try:
-            conversation = Conversation(
-                user_id=user_id,
-                title="New Chat",
-            )
+        db.add(conversation)
+        db.commit()
+        db.refresh(conversation)
 
-            db.add(conversation)
-            db.commit()
-            db.refresh(conversation)
-
-            return conversation.id
-
-        finally:
-            db.close()
+        return conversation.id
 
     def get(
         self,
+        db: Session,
         conversation_id: int,
         user_id: int,
     ):
 
-        db: Session = SessionLocal()
+        conversation = (
+            db.query(Conversation)
+            .filter(
+                Conversation.id == conversation_id,
+                Conversation.user_id == user_id,
+            )
+            .first()
+        )
 
-        try:
-            return (
-                db.query(Conversation)
-                .filter(
-                    Conversation.id == conversation_id,
-                    Conversation.user_id == user_id,
-                )
-                .first()
+        if conversation is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Conversation not found",
             )
 
-        finally:
-            db.close()
+        return conversation
 
     def get_all(
         self,
+        db: Session,
         user_id: int,
     ):
 
-        db: Session = SessionLocal()
-
-        try:
-            return (
-                db.query(Conversation)
-                .filter(
-                    Conversation.user_id == user_id,
-                )
-                .order_by(
-                    Conversation.updated_at.desc()
-                )
-                .all()
+        return (
+            db.query(Conversation)
+            .filter(
+                Conversation.user_id == user_id,
             )
-
-        finally:
-            db.close()
+            .order_by(
+                Conversation.updated_at.desc()
+            )
+            .all()
+        )
 
     def delete(
         self,
+        db: Session,
         conversation_id: int,
         user_id: int,
     ):
 
-        db: Session = SessionLocal()
+        conversation = (
+            db.query(Conversation)
+            .filter(
+                Conversation.id == conversation_id,
+                Conversation.user_id == user_id,
+            )
+            .first()
+        )
 
-        try:
-            conversation = (
-                db.query(Conversation)
-                .filter(
-                    Conversation.id == conversation_id,
-                    Conversation.user_id == user_id,
-                )
-                .first()
+        if conversation is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Conversation not found",
             )
 
-            if conversation:
-                db.delete(conversation)
-                db.commit()
-
-        finally:
-            db.close()
+        db.delete(conversation)
+        db.commit()
 
     def add_message(
         self,
+        db: Session,
         conversation_id: int,
+        user_id: int,
         role: str,
         content: str,
+        domain: str | None = None,
+        model: str | None = None,
     ):
 
-        db: Session = SessionLocal()
+        conversation = (
+            db.query(Conversation)
+            .filter(
+                Conversation.id == conversation_id,
+                Conversation.user_id == user_id,
+            )
+            .first()
+        )
 
-        try:
-            message = Message(
-                conversation_id=conversation_id,
-                role=role,
-                content=content,
+        if conversation is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Conversation not found",
             )
 
-            db.add(message)
+        message = Message(
+            conversation_id=conversation_id,
+            role=role,
+            content=content,
+        )
 
-            conversation = (
-                db.query(Conversation)
-                .filter(
-                    Conversation.id == conversation_id,
-                )
-                .first()
+        db.add(message)
+
+        if (
+            conversation.title == "New Chat"
+            and role == "user"
+        ):
+            conversation.title = (
+                content[:30] + "..."
+                if len(content) > 30
+                else content
             )
 
-            if conversation:
+        if domain is not None:
+            conversation.domain = domain
 
-                if (
-                    conversation.title == "New Chat"
-                    and role == "user"
-                ):
-                    conversation.title = (
-                        content[:30] + "..."
-                        if len(content) > 30
-                        else content
-                    )
+        if model is not None:
+            conversation.model = model
 
-            db.commit()
-
-        finally:
-            db.close()
+        db.commit()
 
 
 conversation_service = ConversationService()

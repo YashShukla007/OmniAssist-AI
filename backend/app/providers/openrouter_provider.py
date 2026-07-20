@@ -13,8 +13,6 @@ class OpenRouterProvider(BaseProvider):
             base_url="https://openrouter.ai/api/v1",
         )
 
-        print("Loaded API Key:", settings.OPENROUTER_API_KEY[:15])
-
         self.models = [
 
             model.strip().replace("\\", "")
@@ -24,15 +22,6 @@ class OpenRouterProvider(BaseProvider):
             if model.strip().replace("\\", "")
 
         ]
-
-        print("=" * 60)
-        print("Configured OpenRouter Models")
-        print("=" * 60)
-
-        for model in self.models:
-            print(repr(model))
-
-        print("=" * 60)
 
     async def generate(
         self,
@@ -45,8 +34,6 @@ class OpenRouterProvider(BaseProvider):
         for model in self.models:
 
             try:
-
-                print(f"\nTrying Model : {model}")
 
                 response = await self.client.chat.completions.create(
 
@@ -85,8 +72,6 @@ Always:
 
                 answer = response.choices[0].message.content
 
-                print(f"Success : {model}")
-
                 return {
 
                     "answer": answer,
@@ -99,18 +84,11 @@ Always:
 
             except RateLimitError:
 
-                print(f"[OpenRouter] {model} is busy. Trying next model...")
-
                 continue
 
             except Exception as e:
 
                 last_error = str(e)
-
-                print("=" * 60)
-                print(f"Model Failed : {model}")
-                print(f"Reason       : {last_error}")
-                print("=" * 60)
 
                 continue
 

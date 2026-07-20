@@ -1,85 +1,25 @@
-import { useChat } from "../../context/ChatContext";
+import { useState } from "react";
+import { Activity, BellRing, BotMessageSquare, CalendarDays, ChevronDown, CircleHelp, FileText, HeartPulse, LayoutDashboard, LogOut, Scale, Settings, ShieldAlert, UserRound, UsersRound, Workflow } from "lucide-react";
+import { useDomain } from "../../context/DomainContext";
 
-function Sidebar() {
+const navigation = [["Dashboard", LayoutDashboard], ["Chat Assistant", BotMessageSquare], ["Appointments", CalendarDays], ["Patients", UsersRound], ["Documents", FileText], ["Workflows", Workflow], ["Analytics", Activity], ["Reminders", BellRing], ["Escalations", ShieldAlert], ["Audit Logs", CircleHelp]];
+const domains = [["Healthcare", HeartPulse], ["IT Helpdesk", BotMessageSquare], ["HR", UsersRound], ["Finance", Activity], ["Legal", Scale]];
 
-  const {
-    conversations,
-    currentConversation,
-    newConversation,
-    selectConversation,
-  } = useChat();
+function Sidebar({ activeView, onNavigate, onLogout, onDomainUnavailable }) {
+  const { selectedDomain, setSelectedDomain } = useDomain();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const username = sessionStorage.getItem("omniassist_username") ?? "Patient";
+  const initials = username.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "P";
+  const chooseDomain = (domain) => {
+    if (domain !== "Healthcare") {
+      onDomainUnavailable(domain);
+      return;
+    }
 
-  return (
-    <aside className="w-72 bg-slate-900 border-r border-slate-800 h-screen flex flex-col">
-
-      {/* Logo */}
-      <div className="p-6 border-b border-slate-800">
-        <h1 className="text-2xl font-bold text-cyan-400">
-          OmniAssist AI
-        </h1>
-
-        <p className="text-sm text-slate-400 mt-2">
-          One AI. Multiple Expert Domains.
-        </p>
-      </div>
-
-      {/* New Chat */}
-      <div className="p-4">
-        <button
-          onClick={newConversation}
-          className="w-full rounded-xl bg-cyan-500 hover:bg-cyan-600 transition-all p-3 font-medium"
-        >
-          + New Chat
-        </button>
-      </div>
-
-      {/* Chat History */}
-      <div className="flex-1 px-4 overflow-y-auto">
-
-        <p className="text-xs uppercase text-slate-500 mb-4">
-          Recent Chats
-        </p>
-
-        <div className="space-y-2">
-
-          {conversations.map((conversation) => (
-
-            <button
-              key={conversation.id}
-              onClick={() => selectConversation(conversation.id)}
-              className={`w-full rounded-lg p-3 text-left transition ${
-                currentConversation.id === conversation.id
-                  ? "bg-cyan-600"
-                  : "bg-slate-800 hover:bg-slate-700"
-              }`}
-            >
-              <p className="truncate">
-                {conversation.title}
-              </p>
-
-              <p className="text-xs text-slate-400 mt-1">
-                {conversation.messages.length} messages
-              </p>
-
-            </button>
-
-          ))}
-
-        </div>
-
-      </div>
-
-      {/* Footer */}
-      <div className="border-t border-slate-800 p-4">
-
-        <button className="w-full rounded-lg bg-slate-800 p-3 hover:bg-slate-700">
-          ⚙ Settings
-        </button>
-
-      </div>
-
-    </aside>
-  );
+    setSelectedDomain(domain);
+    onNavigate("Dashboard");
+  };
+  return <aside className="sidebar"><button className="sidebar-brand" onClick={() => onNavigate("Dashboard")}><span className="brand-mark"><HeartPulse size={18} /></span><strong>OmniAssist AI</strong></button><nav className="sidebar-nav">{navigation.map(([label, Icon]) => <button key={label} className={activeView === label ? "active" : ""} onClick={() => onNavigate(label)}><Icon size={16} />{label}</button>)}</nav><div className="sidebar-domains"><p>Domains</p>{domains.map(([domain, Icon]) => <button key={domain} className={selectedDomain === domain ? "domain-active" : ""} onClick={() => chooseDomain(domain)}><Icon size={15} />{domain}</button>)}</div><div className="sidebar-user"><span className="avatar">{initials}</span><div><strong>{username}</strong><small>{sessionStorage.getItem("omniassist_role") ?? "Patient"}</small></div><button aria-label="Open account menu" onClick={() => setProfileOpen((open) => !open)}><ChevronDown size={16} /></button>{profileOpen && <div className="profile-menu"><button onClick={() => { onNavigate("Patients"); setProfileOpen(false); }}><UserRound size={14} />My Profile</button><button onClick={() => { onNavigate("Settings"); setProfileOpen(false); }}><Settings size={14} />Settings</button><button className="logout" onClick={onLogout}><LogOut size={14} />Logout</button></div>}</div></aside>;
 }
 
 export default Sidebar;

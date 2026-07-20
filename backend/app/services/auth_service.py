@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -20,19 +21,20 @@ class AuthService:
         )
 
         if existing_user:
-            raise ValueError("Email already registered")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
 
         existing_username = db.scalar(
             select(User).where(User.username == user_data.username)
         )
 
         if existing_username:
-            raise ValueError("Username already exists")
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Username already exists")
 
         user = User(
             username=user_data.username,
             email=user_data.email,
             password_hash=hash_password(user_data.password),
+            role="patient",
         )
 
         db.add(user)
@@ -50,13 +52,13 @@ class AuthService:
         )
 
         if user is None:
-            raise ValueError("Invalid email or password")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
 
         if not verify_password(
             credentials.password,
             user.password_hash,
         ):
-            raise ValueError("Invalid email or password")
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid email or password")
 
         access_token = create_access_token(
             {

@@ -28,6 +28,12 @@ class User(Base):
         nullable=False,
     )
 
+    role: Mapped[str] = mapped_column(
+        String(30),
+        default="patient",
+        nullable=False,
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,
@@ -37,4 +43,11 @@ class User(Base):
         "Conversation",
         back_populates="user",
         cascade="all, delete",
+    )
+
+    patient_profile = relationship(
+        "PatientProfile",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
     )

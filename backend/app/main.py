@@ -4,13 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.app.config.settings import settings
 from backend.app.api.v1.router import router as api_router
 
-from backend.app.database.base import Base
-from backend.app.database.session import engine
-
-from backend.app.models import *
-
-Base.metadata.create_all(bind=engine)
-
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,

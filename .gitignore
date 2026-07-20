@@ -16,6 +16,8 @@ venv/
 
 # Environment Variables
 .env
+backend/uploads/
+.uv-cache/
 
 # ==========================
 # Models & Training (FOR FINETUNING PART)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from backend.app.database.session import get_db
@@ -26,14 +26,7 @@ def register(
     user: UserRegister,
     db: Session = Depends(get_db),
 ):
-    try:
-        return AuthService.register_user(db, user)
-
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=str(e),
-        )
+    return AuthService.register_user(db, user)
     
 
 @router.post(
@@ -44,17 +37,7 @@ def login(
     credentials: UserLogin,
     db: Session = Depends(get_db),
 ):
-    try:
-        return AuthService.login_user(
-            db,
-            credentials,
-        )
-
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(e),
-        )
+    return AuthService.login_user(db, credentials)
     
 @router.get(
     "/me",
@@ -63,4 +46,4 @@ def login(
 def me(
     current_user: User = Depends(get_current_user),
 ):
-    return current_user    
+    return current_user

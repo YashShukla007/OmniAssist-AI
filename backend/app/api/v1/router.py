@@ -8,6 +8,7 @@ from backend.app.api.v1.auth import router as auth_router
 from backend.app.api.v1.conversations import (
     router as conversations_router,
 )
+from backend.app.api.v1.healthcare import router as healthcare_router
 
 router = APIRouter()
 
@@ -27,3 +28,5 @@ router.include_router(
 )
 
 router.include_router(auth_router)
+
+router.include_router(healthcare_router)

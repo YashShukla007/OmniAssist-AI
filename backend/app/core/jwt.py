@@ -5,6 +5,12 @@ import jwt
 from backend.app.config.settings import settings
 
 
+def _configured_secret_key() -> str:
+    if len(settings.SECRET_KEY) < 32:
+        raise RuntimeError("SECRET_KEY must be configured with at least 32 characters before authentication can be used.")
+    return settings.SECRET_KEY
+
+
 def create_access_token(data: dict):
     payload = data.copy()
 
@@ -16,7 +22,7 @@ def create_access_token(data: dict):
 
     return jwt.encode(
         payload,
-        settings.SECRET_KEY,
+        _configured_secret_key(),
         algorithm=settings.ALGORITHM,
     )
 
@@ -24,6 +30,6 @@ def create_access_token(data: dict):
 def decode_token(token: str):
     return jwt.decode(
         token,
-        settings.SECRET_KEY,
+        _configured_secret_key(),
         algorithms=[settings.ALGORITHM],
     )

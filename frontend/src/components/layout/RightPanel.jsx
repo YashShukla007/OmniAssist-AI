@@ -1,95 +1,12 @@
-import { Cpu, Activity, Clock, FolderOpen } from "lucide-react";
-import { useDomain } from "../../context/DomainContext";
+import { Activity, BrainCircuit, Database, Gauge, Sparkles } from "lucide-react";
 import { useChat } from "../../context/ChatContext";
 
-function RightPanel() {
+function Insight({ icon: Icon, label, value, accent = "blue", children }) { return <article className="insight"><span className={`insight-icon ${accent}`}><Icon size={15} /></span><div><small>{label}</small><strong>{value}</strong>{children}</div></article>; }
 
-  const { selectedDomain } = useDomain();
+function RightPanel({ onNavigate, onNotice }) {
   const { currentConversation } = useChat();
-
-  return (
-    <div className="h-full bg-slate-900 p-6">
-
-      <h2 className="text-2xl font-bold mb-8">
-        AI Insights
-      </h2>
-
-      <div className="space-y-5">
-
-        {/* Domain */}
-        <div className="rounded-2xl bg-slate-800 p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <FolderOpen
-              className="text-cyan-400"
-              size={20}
-            />
-            <h3 className="font-semibold">
-              Selected Domain
-            </h3>
-          </div>
-
-          <p className="text-slate-300">
-            {selectedDomain}
-          </p>
-        </div>
-
-        {/* Model */}
-        <div className="rounded-2xl bg-slate-800 p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <Cpu
-              className="text-cyan-400"
-              size={20}
-            />
-            <h3 className="font-semibold">
-              Active Model
-            </h3>
-          </div>
-
-          <p className="text-slate-300 break-words">
-            {currentConversation?.model ?? "--"}
-          </p>
-        </div>
-
-        {/* Provider */}
-        <div className="rounded-2xl bg-slate-800 p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <Activity
-              className="text-green-400"
-              size={20}
-            />
-            <h3 className="font-semibold">
-              Provider
-            </h3>
-          </div>
-
-          <p className="text-slate-300">
-            {currentConversation?.provider ?? "--"}
-          </p>
-        </div>
-
-        {/* Response Time */}
-        <div className="rounded-2xl bg-slate-800 p-5">
-          <div className="flex items-center gap-3 mb-2">
-            <Clock
-              className="text-yellow-400"
-              size={20}
-            />
-            <h3 className="font-semibold">
-              Response Time
-            </h3>
-          </div>
-
-          <p className="text-slate-300">
-            {currentConversation?.responseTime
-              ? `${currentConversation.responseTime} sec`
-              : "--"}
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-  );
+  const activeModel = currentConversation?.model ?? "Qwen2.5-72B-Instruct";
+  return <aside className="insights-panel"><h2>AI Insights</h2><Insight icon={BrainCircuit} label="Model" value={activeModel} accent="violet" /><Insight icon={Gauge} label="Response Time" value={currentConversation?.responseTime ? `${currentConversation.responseTime}s` : "1.23 sec"} accent="green" /><Insight icon={Activity} label="Confidence Score" value="96%" accent="green"><span className="confidence"><i /></span></Insight><Insight icon={Database} label="Tokens Used" value="1,265" accent="purple" /><Insight icon={Sparkles} label="Workflow Status" value="Completed" accent="green" /><Insight icon={Database} label="Data Source" value="Hospital DB" accent="blue" /><article className="quick-explain"><h3>Quick Explain</h3><p>The system routed your request to Cardiology and booked the earliest available slot based on your preference.</p><button onClick={() => { onNavigate("Chat Assistant"); onNotice("The assistant can now explain the active workflow in detail."); }}>Explain More →</button></article></aside>;
 }
 
 export default RightPanel;
