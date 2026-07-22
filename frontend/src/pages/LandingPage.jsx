@@ -9,8 +9,11 @@ import {
   Scale,
   ShieldCheck,
   UsersRound,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
 
 const domains = [
   { title: "Healthcare", text: "Patient care, appointments, records & more", icon: HeartPulse, accent: "teal" },
@@ -30,6 +33,7 @@ function Brand({ dark = false }) {
 }
 
 function LandingPage() {
+  const { theme, toggleTheme } = useTheme();
   return (
     <main className="marketing-page">
       <nav className="marketing-nav">
@@ -40,7 +44,10 @@ function LandingPage() {
           <a href="#security">Resources</a>
           <a href="#about">About us</a>
         </div>
-        <div className="nav-actions">
+        <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button className="theme-toggle-btn" aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} onClick={toggleTheme}>
+            {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
           <Link className="button button-secondary" to="/login">Login</Link>
           <Link className="button button-primary" to="/register">Register</Link>
         </div>

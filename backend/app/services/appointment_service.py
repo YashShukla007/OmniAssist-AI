@@ -6,10 +6,12 @@ from sqlalchemy.orm import Session, joinedload
 
 from backend.app.models.healthcare import Appointment, AppointmentSlot, Department, Doctor, PatientProfile, Reminder
 from backend.app.schemas.healthcare import AppointmentCreate, AppointmentResponse, AppointmentUpdate
+from backend.app.services.department_service import department_service
 
 
 class AppointmentService:
     def _department(self, db: Session, department_name: str) -> Department:
+        department_service.ensure_default_catalogue(db)
         department = db.scalar(select(Department).where(Department.name.ilike(department_name), Department.active.is_(True)))
         if department is None:
             raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="That department is not available for administrative booking.")

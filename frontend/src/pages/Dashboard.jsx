@@ -31,10 +31,137 @@ function DocumentsPanel({ documents, onNavigate }) { return <article className="
 function ReminderPanel({ reminders, onNavigate, onToggle }) { return <article className="dashboard-panel"><div className="section-heading"><h2>Health Reminders</h2><button onClick={() => onNavigate("Reminders")}>View all</button></div>{reminders.slice(0, 3).map((item) => <button className="reminder-line" onClick={() => onToggle(item.id)} key={item.id}><span className={item.status === "completed" ? "reminder-check done" : "reminder-check"}>{item.status === "completed" && <Check size={12} />}</span><div><strong>{item.message}</strong><small>{new Date(item.scheduled_at).toLocaleString()}</small></div></button>)}{reminders.length === 0 && <p className="empty-panel">No reminders scheduled.</p>}</article>; }
 
 function ProfileWorkspace({ profile, onSave, onNotice }) {
-  const [form, setForm] = useState(profile ?? { phone: "", preferred_language: "en", emergency_contact: "", date_of_birth: "" });
+  const [form, setForm] = useState(profile ?? {
+    date_of_birth: "",
+    phone: "",
+    preferred_language: "en",
+    emergency_contact: "",
+    gender: "",
+    blood_group: "",
+    marital_status: "",
+    address: "",
+    allergies: "",
+    current_medications: "",
+    medical_history: "",
+    insurance_provider: "",
+    insurance_policy_number: ""
+  });
+
   const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
-  async function submit(event) { event.preventDefault(); const saved = await onSave(form); if (saved) onNotice("Your patient profile has been saved."); }
-  return <div className="workspace-view"><div className="workspace-header"><div><h1>Patient Profile</h1><p>Keep your contact and communication preferences current.</p></div></div><form className="profile-form" onSubmit={submit}><label>Date of birth<input name="date_of_birth" type="date" value={form.date_of_birth} onChange={update} /></label><label>Phone<input name="phone" value={form.phone ?? ""} onChange={update} placeholder="+91 98765 43210" /></label><label>Preferred language<select name="preferred_language" value={form.preferred_language ?? "en"} onChange={update}><option value="en">English</option><option value="hi">Hindi</option></select></label><label>Emergency contact<input name="emergency_contact" value={form.emergency_contact ?? ""} onChange={update} placeholder="Name and phone number" /></label><button className="button button-primary">Save profile</button></form></div>;
+  async function submit(event) {
+    event.preventDefault();
+    const saved = await onSave(form);
+    if (saved) onNotice("Your patient medical profile has been saved.");
+  }
+
+  return (
+    <div className="workspace-view">
+      <div className="workspace-header">
+        <div>
+          <h1>Patient Medical Profile</h1>
+          <p>Complete your official hospital medical record form below. All information is secure and encrypted.</p>
+        </div>
+      </div>
+      <form className="profile-form-enhanced" onSubmit={submit}>
+        <div className="form-section">
+          <h3>1. Demographics & Personal Details</h3>
+          <div className="form-grid-3">
+            <label>Date of birth
+              <input name="date_of_birth" type="date" value={form.date_of_birth ?? ""} onChange={update} />
+            </label>
+            <label>Gender
+              <select name="gender" value={form.gender ?? ""} onChange={update}>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label>Blood Group
+              <select name="blood_group" value={form.blood_group ?? ""} onChange={update}>
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </label>
+            <label>Marital Status
+              <select name="marital_status" value={form.marital_status ?? ""} onChange={update}>
+                <option value="">Select Marital Status</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>2. Contact & Language Preferences</h3>
+          <div className="form-grid-2">
+            <label>Phone
+              <input name="phone" value={form.phone ?? ""} onChange={update} placeholder="+91 98765 43210" />
+            </label>
+            <label>Preferred language
+              <select name="preferred_language" value={form.preferred_language ?? "en"} onChange={update}>
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+              </select>
+            </label>
+            <label className="full-width">Residential Address
+              <input name="address" value={form.address ?? ""} onChange={update} placeholder="House No, Street, City, State, ZIP" />
+            </label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>3. Emergency Contact Details</h3>
+          <div className="form-grid-2">
+            <label className="full-width">Emergency Contact Name & Phone
+              <input name="emergency_contact" value={form.emergency_contact ?? ""} onChange={update} placeholder="e.g. Jane Doe (+91 98765 00000)" />
+            </label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>4. Clinical & Medical History</h3>
+          <div className="form-grid-1">
+            <label>Known Allergies (Food, Drugs, Environmental)
+              <textarea name="allergies" value={form.allergies ?? ""} onChange={update} placeholder="List all allergies, or type 'None'..." rows={2} />
+            </label>
+            <label>Current Medications
+              <textarea name="current_medications" value={form.current_medications ?? ""} onChange={update} placeholder="Name, dosage, and frequency of all current medications..." rows={2} />
+            </label>
+            <label>Pre-existing Medical Conditions & History
+              <textarea name="medical_history" value={form.medical_history ?? ""} onChange={update} placeholder="Past surgeries, chronic conditions, family history, etc..." rows={3} />
+            </label>
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>5. Health Insurance Details</h3>
+          <div className="form-grid-2">
+            <label>Insurance Provider
+              <input name="insurance_provider" value={form.insurance_provider ?? ""} onChange={update} placeholder="e.g. Star Health Insurance" />
+            </label>
+            <label>Policy Number
+              <input name="insurance_policy_number" value={form.insurance_policy_number ?? ""} onChange={update} placeholder="e.g. SH-9876543-ABC" />
+            </label>
+          </div>
+        </div>
+
+        <button className="button button-primary form-submit-btn">Save Hospital Record</button>
+      </form>
+    </div>
+  );
 }
 
 function WorkflowWorkspace({ workflows }) { return <div className="workspace-view"><div className="workspace-header"><div><h1>Agent Workflows</h1><p>Persisted coordination runs created by the Healthcare AI Assistant.</p></div></div><div className="workspace-list">{workflows.map((workflow) => <div className="workspace-row" key={workflow.id}><ClipboardList size={18} /><div><strong>{workflow.request_text}</strong><small>{workflow.current_step.replaceAll("_", " ")} · {new Date(workflow.created_at).toLocaleString()}</small></div><span className={`status ${statusClass(workflow.status)}`}>{displayStatus(workflow.status)}</span></div>)}{workflows.length === 0 && <p className="empty-panel">Start an administrative request in Chat Assistant to create a workflow.</p>}</div></div>; }
@@ -150,11 +277,14 @@ function EnhancedDocumentsWorkspace({ documents, onNotice }) {
 }
 
 function EnhancedWorkspace(props) {
+  const userRole = sessionStorage.getItem("omniassist_role");
+  const normalizedRole = userRole?.toLowerCase()?.replace(/\s+/g, "_");
+  const isStaffOrAdmin = ["hospital_staff", "administrator", "staff", "admin"].includes(normalizedRole);
   if (props.title === "Appointments") return <EnhancedAppointmentWorkspace appointments={props.appointments} onAddAppointment={props.onAddAppointment} onNotice={props.onNotice} />;
   if (props.title === "Documents") return <EnhancedDocumentsWorkspace documents={props.documents} onNotice={props.onNotice} />;
-  if (props.title === "Workflows" && ["hospital_staff", "administrator"].includes(sessionStorage.getItem("omniassist_role"))) return <StaffOperationsWorkspace title="Workflows" role={sessionStorage.getItem("omniassist_role")} />;
+  if (props.title === "Workflows" && isStaffOrAdmin) return <StaffOperationsWorkspace title="Workflows" role={userRole} />;
   if (props.title === "Workflows") return <EnhancedWorkflowWorkspace workflows={props.workflows} />;
-  if (["Escalations", "Audit Logs", "Analytics"].includes(props.title)) return <StaffOperationsWorkspace title={props.title} role={sessionStorage.getItem("omniassist_role")} />;
+  if (["Escalations", "Audit Logs", "Analytics"].includes(props.title)) return <StaffOperationsWorkspace title={props.title} role={userRole} />;
   return <LegacyWorkspace {...props} />;
 }
 
@@ -178,9 +308,25 @@ function Dashboard() {
     if (workflow) setWorkflows((current) => [{ id: workflow.id, request_text: workflow.summary, status: workflow.status, current_step: workflow.current_step, state: workflow.state, created_at: new Date().toISOString() }, ...current.filter((item) => item.id !== workflow.id)]);
     await loadHealthcareData();
   };
+
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (localStorage.getItem("omniassist_token")) {
+        window.history.pushState(null, null, window.location.href);
+      }
+    };
+    if (localStorage.getItem("omniassist_token")) {
+      window.history.pushState(null, null, window.location.href);
+      window.addEventListener("popstate", handlePopState);
+    }
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   useEffect(() => {
     if (!localStorage.getItem("omniassist_token")) {
-      navigate("/login");
+      navigate("/login", { replace: true });
       return undefined;
     }
 
@@ -195,11 +341,20 @@ function Dashboard() {
   const chooseFile = () => fileInputRef.current?.click();
   const uploadFile = async (event) => { const file = event.target.files?.[0]; if (!file) return; const formData = new FormData(); formData.append("file", file); try { const response = await api.post("/healthcare/documents", formData); showNotice(response.data.duplicate ? `${file.name} is already stored; the duplicate was detected.` : `${file.name} was uploaded and classified.`); await loadHealthcareData(); } catch (error) { showNotice(error.response?.data?.detail ?? "Document upload failed."); } finally { event.target.value = ""; } };
   const addAppointment = async (form) => { try { const response = await api.post("/healthcare/appointments", form); showNotice(`${response.data.department} appointment booked with ${response.data.doctor_name}.`); await loadHealthcareData(); return true; } catch (error) { showNotice(error.response?.data?.detail ?? "Appointment booking failed."); return false; } };
-  const toggleReminder = async (reminderId) => { try { await api.post(`/healthcare/reminders/${reminderId}/toggle`); await loadHealthcareData(); } catch (error) { showNotice(error.response?.data?.detail ?? "Reminder update failed."); } };
+  const toggleReminder = async (reminderId) => {
+    setReminders((current) => current.map((item) => item.id === reminderId ? { ...item, status: item.status === "completed" ? "scheduled" : "completed" } : item));
+    try {
+      await api.post(`/healthcare/reminders/${reminderId}/toggle`);
+      await loadHealthcareData();
+    } catch (error) {
+      showNotice(error.response?.data?.detail ?? "Reminder update failed.");
+      await loadHealthcareData();
+    }
+  };
   const saveProfile = async (update) => { try { const response = await api.put("/healthcare/profile", update); setProfile(response.data); return true; } catch (error) { showNotice(error.response?.data?.detail ?? "Profile update failed."); return false; } };
   const showDomainUnavailable = (domain) => showNotice(`${domain} is work in progress. Healthcare is the only integrated domain right now; ${domain} will be connected in a future release.`);
   const logout = () => { localStorage.removeItem("omniassist_token"); sessionStorage.removeItem("omniassist_role"); sessionStorage.removeItem("omniassist_username"); navigate("/"); };
-  return <MainLayout sidebar={<Sidebar activeView={activeView} onNavigate={setActiveView} onLogout={logout} onDomainUnavailable={showDomainUnavailable} />} insights={<RightPanel onNavigate={setActiveView} onNotice={showNotice} />}><Navbar onNavigate={setActiveView} onNotice={showNotice} onDomainUnavailable={showDomainUnavailable} /><div className={`dashboard-content ${activeView === "Chat Assistant" ? "assistant-view" : ""}`}>{activeView === "Dashboard" ? <DashboardOverview appointments={appointments} documents={documents} reminders={reminders} username={username} onNavigate={setActiveView} onUpload={chooseFile} onToggleReminder={toggleReminder} /> : activeView === "Chat Assistant" ? <ChatWindow showHeader={false} compact onHealthcareUpdated={refreshAfterHealthcareWorkflow} /> : <Workspace title={activeView} appointments={appointments} documents={documents} reminders={reminders} profile={profile} workflows={workflows} onAddAppointment={addAppointment} onUpload={chooseFile} onToggleReminder={toggleReminder} onSaveProfile={saveProfile} onNotice={showNotice} />}</div><input className="visually-hidden" ref={fileInputRef} type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={uploadFile} /><Notice message={notice} onDismiss={() => setNotice("")} /></MainLayout>;
+  return <MainLayout sidebar={<Sidebar activeView={activeView} onNavigate={setActiveView} onLogout={logout} onDomainUnavailable={showDomainUnavailable} />} insights={<RightPanel onNavigate={setActiveView} onNotice={showNotice} workflows={workflows} />}><Navbar onNavigate={setActiveView} onNotice={showNotice} onDomainUnavailable={showDomainUnavailable} /><div className={`dashboard-content ${activeView === "Chat Assistant" ? "assistant-view" : ""}`}>{activeView === "Dashboard" ? <DashboardOverview appointments={appointments} documents={documents} reminders={reminders} username={username} onNavigate={setActiveView} onUpload={chooseFile} onToggleReminder={toggleReminder} /> : activeView === "Chat Assistant" ? <ChatWindow showHeader={false} compact onHealthcareUpdated={refreshAfterHealthcareWorkflow} /> : <Workspace title={activeView} appointments={appointments} documents={documents} reminders={reminders} profile={profile} workflows={workflows} onAddAppointment={addAppointment} onUpload={chooseFile} onToggleReminder={toggleReminder} onSaveProfile={saveProfile} onNotice={showNotice} />}</div><input className="visually-hidden" ref={fileInputRef} type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={uploadFile} /><Notice message={notice} onDismiss={() => setNotice("")} /></MainLayout>;
 }
 
 export default Dashboard;

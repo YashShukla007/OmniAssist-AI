@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Bot, Cpu, Copy, Check } from "lucide-react";
 
 import MarkdownRenderer from "./MarkdownRenderer";
+import { useTheme } from "../../context/ThemeContext";
 
 function MessageBubble({ message }) {
 
   const isUser = message.role === "user";
+  const { theme } = useTheme();
 
   const [copied, setCopied] = useState(false);
 
@@ -45,7 +47,9 @@ function MessageBubble({ message }) {
         className={`max-w-4xl rounded-2xl ${
           isUser
             ? "bg-cyan-500 text-white px-6 py-4"
-            : "bg-slate-800 border border-slate-700"
+            : theme === "dark"
+              ? "bg-slate-800 border border-slate-700 text-slate-100"
+              : "bg-white border border-slate-200 text-slate-800 shadow-sm"
         }`}
       >
 
@@ -67,13 +71,13 @@ function MessageBubble({ message }) {
 
             {/* Header */}
 
-            <div className="flex items-center justify-between border-b border-slate-700 px-6 py-4">
+            <div className={`flex items-center justify-between border-b px-6 py-4 ${theme === "dark" ? "border-slate-700" : "border-slate-100"}`}>
 
               <div className="flex items-center gap-3">
 
                 <Bot
                   size={22}
-                  className="text-cyan-400"
+                  className="text-cyan-500"
                 />
 
                 <div>
@@ -82,7 +86,7 @@ function MessageBubble({ message }) {
                     OmniAssist AI
                   </h3>
 
-                  <p className="text-xs text-slate-400">
+                  <p className={`text-xs ${theme === "dark" ? "text-slate-400" : "text-slate-500"}`}>
                     Multi-Domain AI Assistant
                   </p>
 
@@ -92,7 +96,7 @@ function MessageBubble({ message }) {
 
               <button
                 onClick={copyResponse}
-                className="flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-400 transition"
+                className={`flex items-center gap-2 text-sm transition ${theme === "dark" ? "text-slate-400 hover:text-cyan-400" : "text-slate-500 hover:text-cyan-600"}`}
               >
 
                 {copied ? (
@@ -113,9 +117,9 @@ function MessageBubble({ message }) {
 
             {/* Model & Confidence */}
 
-            <div className="flex flex-wrap gap-3 px-6 py-4 border-b border-slate-700">
+            <div className={`flex flex-wrap gap-3 px-6 py-4 border-b ${theme === "dark" ? "border-slate-700" : "border-slate-100"}`}>
 
-              <div className="flex items-center gap-2 rounded-full bg-slate-700 px-3 py-1 text-sm">
+              <div className={`flex items-center gap-2 rounded-full px-3 py-1 text-sm ${theme === "dark" ? "bg-slate-700 text-slate-200" : "bg-slate-100 text-slate-600"}`}>
 
                 <Cpu size={15} />
 

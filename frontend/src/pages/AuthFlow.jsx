@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { ArrowLeft, Building2, HeartPulse, LockKeyhole, ShieldCheck, UserRound } from "lucide-react";
+import { ArrowLeft, Building2, HeartPulse, LockKeyhole, ShieldCheck, UserRound, Moon, Sun } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { Brand } from "./LandingPage";
+import { useTheme } from "../context/ThemeContext";
 
 const roles = [{ name: "Patient", description: "Access your health information, book appointments and more", icon: UserRound }];
 
@@ -31,7 +32,7 @@ function LoginForm() {
       const userResponse = await api.get("/auth/me");
       sessionStorage.setItem("omniassist_role", userResponse.data.role);
       sessionStorage.setItem("omniassist_username", userResponse.data.username);
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       setMessage(error.response?.data?.detail ?? "We could not sign you in. Check your details and backend connection.");
     } finally {
@@ -58,7 +59,7 @@ function RegisterForm() {
     setMessage("");
     try {
       await api.post("/auth/register", { username: form.username, email: form.email, password: form.password });
-      navigate("/login");
+      navigate("/login", { replace: true });
     } catch (error) {
       setMessage(error.response?.data?.detail ?? "We could not create your account. Check your backend connection.");
     } finally {
@@ -76,8 +77,9 @@ function RoleSelection() {
 }
 
 function AuthFlow({ mode }) {
+  const { theme, toggleTheme } = useTheme();
   const form = mode === "login" ? <LoginForm /> : mode === "register" ? <RegisterForm /> : <RoleSelection />;
-  return <main className="auth-page"><header><Brand /><Link className="back-link" to="/"><ArrowLeft size={16} /> Back to website</Link></header><div className="auth-layout"><aside className="auth-aside"><span className="aside-icon"><HeartPulse size={32} /></span><h2>Care, coordinated by intelligent workflows.</h2><p>Bring conversations, documents, appointments, and trusted AI assistance into one secure workspace.</p><div className="aside-points"><span><LockKeyhole size={16} /> Built for secure teams</span><span><Building2 size={16} /> Multi-domain by design</span></div></aside><div className="auth-content">{form}</div></div></main>;
+  return <main className="auth-page"><header><Brand /><div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}><button className="theme-toggle-btn" aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} onClick={toggleTheme}>{theme === "light" ? <Moon size={16} /> : <Sun size={16} />}</button><Link className="back-link" to="/"><ArrowLeft size={16} /> Back to website</Link></div></header><div className="auth-layout"><aside className="auth-aside"><span className="aside-icon"><HeartPulse size={32} /></span><h2>Care, coordinated by intelligent workflows.</h2><p>Bring conversations, documents, appointments, and trusted AI assistance into one secure workspace.</p><div className="aside-points"><span><LockKeyhole size={16} /> Built for secure teams</span><span><Building2 size={16} /> Multi-domain by design</span></div></aside><div className="auth-content">{form}</div></div></main>;
 }
 
 export default AuthFlow;

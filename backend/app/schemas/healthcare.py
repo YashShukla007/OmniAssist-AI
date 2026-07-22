@@ -10,6 +10,15 @@ class PatientProfileUpdate(BaseModel):
     phone: str | None = Field(default=None, max_length=30)
     preferred_language: str | None = Field(default=None, max_length=30)
     emergency_contact: str | None = Field(default=None, max_length=100)
+    gender: str | None = Field(default=None, max_length=20)
+    blood_group: str | None = Field(default=None, max_length=10)
+    marital_status: str | None = Field(default=None, max_length=20)
+    address: str | None = Field(default=None, max_length=200)
+    allergies: str | None = None
+    current_medications: str | None = None
+    medical_history: str | None = None
+    insurance_provider: str | None = Field(default=None, max_length=100)
+    insurance_policy_number: str | None = Field(default=None, max_length=100)
 
 
 class PatientProfileResponse(PatientProfileUpdate):
